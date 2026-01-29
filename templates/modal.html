@@ -1,0 +1,80 @@
+<!-- Modal -->
+<script>
+    $(document).on('show.bs.modal', '#myModal', function (event) {
+      var button = $(event.relatedTarget)
+      var status = button.data('status')
+      var modal = $(this)
+      modal.find('[id=status]').val(status)
+    })
+</script>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title my-2">Add Task</h4>
+        </div>
+        <div class="modal-body">
+            {{ render_form(form, action=url_for("add_task"), novalidate=True, button_map={"submit": "outline-light"}) }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).on('show.bs.modal', '#myModalUpdate', function (event) {
+      var button = $(event.relatedTarget)
+      var id = button.data('id')
+      var task_name = button.data('task_name')
+      var author = button.data('author')
+      var date_deadline = button.data('date_deadline')
+      var time_deadline = button.data('time_deadline')
+      var description = button.data('description')
+      var tag = button.data('tag')
+      var status = button.data('status')
+      var link = button.data('link')
+      $('#myForm').prop('action', ' {{ url_for('update_task', task_id=id) }}' + id );
+      var modal = $(this)
+      modal.find('[id=task_name]').val(task_name)
+      modal.find('[id=author]').val(author)
+      modal.find('[id=date_deadline]').val(date_deadline)
+      modal.find('[id=time_deadline]').val(time_deadline)
+      modal.find('[id=description]').val(description)
+      modal.find('[id=tag]').val(tag)
+      modal.find('[id=status]').val(status)
+      modal.find('[id=link]').val(link)
+    })
+</script>
+<div class="modal fade" id="myModalUpdate" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title my-2">Update Task</h4>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="myForm">
+                {{ form.csrf_token() }}
+                {{ render_field(update_form.task_name) }}
+                {{ render_field(update_form.author) }}
+                {{ render_field(update_form.date_deadline) }}
+                {{ render_field(update_form.time_deadline) }}
+                {{ render_field(update_form.description) }}
+                {{ render_field(update_form.tag) }}
+                {{ render_field(update_form.status) }}
+                {{ render_field(update_form.link) }}
+                {{ render_field(update_form.submit) }}
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>

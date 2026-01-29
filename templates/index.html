@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% from "bootstrap5/form.html" import render_form, render_field %}
+{% block title %}Task Manager{% endblock %}
+
+{% block content %}
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        <div class="row">
+            <div class="col-2 flex-column d-flex border rounded flex-shrink-0 p-3 text-bg-dark" style="width: 200px">
+              <span class="fs-4">Filters</span>
+              <hr>
+                {{ render_form(search_form, action=url_for("search_tasks"), novalidate=True, button_map={"search": "outline-light"}) }}
+              <p><a role="button" class="btn btn-outline-secondary mt-2" href=" {{ url_for('home') }} ">Reset Filters</a></p>
+              <hr>
+              <button role="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#myModal">Add Task</button>
+            </div>
+            <div class="vr bg-body-tertiary"></div>
+            <div class="col container-fluid min-vh-100 d-flex flex-column">
+                <div class="row flex-row flex-nowrap overflow-scroll container-fluid min-vh-100 d-flex">
+                    <div class="col-lg-4 d-flex flex-column flex-shrink-0 p-3 border rounded  bg-info-subtle">
+                        <div class="row">
+                            <div class="col-9 flex-row">
+                                <span class="fs-4 ">Tasks to Do</span>
+                            </div>
+                            <div class="col-3 flex-row-reverse">
+                                <a role="button" class="btn btn-outline-info" href="#" data-bs-toggle="modal" data-bs-target="#myModal" data-status="To Do">
+                                    <img src="./static/image/plus.svg" alt="add button" width="25" height="25" class="mx-1"/>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                         <div class="accordion " id="accordionPanelsStayOpenToDoExample">
+                          {% for task in tasks %}
+                            {% if task.status == "To Do" %}
+                              <div class="accordion-item bg-info-subtle">
+                                <h2 class="accordion-header">
+                                  {% if task.date_deadline < now %}
+                                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenToDo-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenToDo-collapse{{ task.id }}" style="background-color:#0c2d36;--#{$prefix}body-color:#23282c;">
+                                  </button>
+                                  {%  else %}
+                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenToDo-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenToDo-collapse{{ task.id }}" style="background-color:#0c2d36;--#{$prefix}body-color:#23282c;">
+                                  {% endif %}
+                                    {{ task.task_name }}
+                                  </button>
+                                </h2>
+                                <div id="panelsStayOpenToDo-collapse{{ task.id }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        {% include 'card_body.html' %}
+                                    </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                    <div class="vr bg-body-tertiary"></div>
+                    <div class="col-lg-4 d-flex flex-column flex-shrink-0 p-3 border rounded bg-primary-subtle">
+                        <div class="row">
+                            <div class="col-9 flex-row">
+                                <span class="fs-4 ">In Progress</span>
+                            </div>
+                            <div class="col-3 flex-row-reverse">
+                                <a role="button" class="btn btn-outline-primary" href="#" data-bs-toggle="modal" data-bs-target="#myModal" data-status="In Progress">
+                                    <img src="./static/image/plus.svg" alt="add button" width="25" height="25" class="mx-1"/>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="accordion " id="accordionPanelsStayOpenProgressExample">
+                          {% for task in tasks %}
+                            {% if task.status == "In Progress" %}
+                              <div class="accordion-item bg-primary-subtle">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenProgress-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenProgress-collapse{{ task.id }}"
+                                  style="background-color:#091c38;accordion-button-color:#0c2117;">
+                                      {{ task.task_name }}
+                                  </button>
+                                </h2>
+                                <div id="panelsStayOpenProgress-collapse{{ task.id }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        {% include 'card_body.html' %}
+                                    </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                    <div class="vr bg-body-tertiary"></div>
+                    <div class="col-lg-4 d-flex flex-column flex-shrink-0 p-3 border rounded bg-success-subtle">
+                        <div class="row">
+                            <div class="col-9 flex-row">
+                                <span class="fs-4 ">Tasks Done</span>
+                            </div>
+                            <div class="col-3 flex-row-reverse">
+                                <a role="button" class="btn btn-outline-success" href="#" data-bs-toggle="modal" data-bs-target="#myModal" data-status="Done">
+                                    <img src="./static/image/plus.svg" alt="add button" width="25" height="25" class="mx-1"/>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="accordion " id="accordionPanelsStayOpenExample">
+                          {% for task in tasks %}
+                            {% if task.status == "Done" %}
+                              <div class="accordion-item bg-success-subtle">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpen-collapse{{ task.id }}"
+                                  style="background-color:#0c2117;accordion-button-color:#0c2117;">
+                                      {{ task.task_name }}
+                                  </button>
+                                </h2>
+                                <div id="panelsStayOpen-collapse{{ task.id }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        {% include 'card_body.html' %}
+                                    </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                    <div class="vr bg-body-tertiary"></div>
+                    <div class="col-lg-4 d-flex flex-column flex-shrink-0 p-3 border rounded bg-warning-subtle">
+                        <div class="row">
+                            <div class="col-9 flex-row">
+                                <span class="fs-4 ">Backlog</span>
+                            </div>
+                            <div class="col-3 flex-row-reverse">
+                                <a role="button" class="btn btn-outline-warning" href="#" data-bs-toggle="modal" data-bs-target="#myModal" data-status="Done">
+                                    <img src="./static/image/plus.svg" alt="add button" width="25" height="25" class="mx-1"/>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="accordion " id="accordionPanelsStayOpenBacklogExample">
+                          {% for task in tasks %}
+                            {% if task.status == "Backlog" %}
+                              <div class="accordion-item bg-warning-subtle">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenBacklog-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenBacklog-collapse{{ task.id }}"
+                                  style="">
+                                      {{ task.task_name }}
+                                  </button>
+                                </h2>
+                                <div id="panelsStayOpenBacklog-collapse{{ task.id }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        {% include 'card_body.html' %}
+                                    </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                    <div class="vr bg-body-tertiary"></div>
+                    <div class="col-lg-4 d-flex flex-column flex-shrink-0 p-3 border rounded bg-secondary-subtle">
+                        <div class="row">
+                            <div class="col-9 flex-row">
+                                <span class="fs-4 ">Canceled Tasks</span>
+                            </div>
+                            <div class="col-3 flex-row-reverse">
+                                <a role="button" class="btn btn-outline-secondary" href="#" data-bs-toggle="modal" data-bs-target="#myModal" data-status="Done">
+                                    <img src="./static/image/plus.svg" alt="add button" width="25" height="25" class="mx-1"/>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="accordion " id="accordionPanelsStayOpenCanceledExample">
+                          {% for task in tasks %}
+                            {% if task.status == "Canceled" %}
+                              <div class="accordion-item bg-secondary-subtle">
+                                <h2 class="accordion-header">
+                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenCanceled-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenCanceled-collapse{{ task.id }}">
+                                      {{ task.task_name }}
+                                  </button>
+                                </h2>
+                                <div id="panelsStayOpenCanceled-collapse{{ task.id }}" class="accordion-collapse collapse">
+                                    <div class="accordion-body">
+                                        {% include 'card_body.html' %}
+                                        <a href="{{ url_for('delete_task', task_id=task.id) }}">
+                                            Delete Task
+                                        </a>
+                                    </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

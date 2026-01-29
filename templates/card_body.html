@@ -1,0 +1,46 @@
+<!-- Card Body -->
+<p>
+{% if task.tag == "Hobby" %}
+<a role="button" class="btn badge rounded-pill btn-outline-primary text-primary-emphasis" href="{{ url_for('search_tasks', tag=task.tag) }}">{{ task.tag }}</a>
+{% elif task.tag == "Work" %}
+<a role="button" class="btn badge rounded-pill btn-outline-danger text-danger-emphasis" href="{{ url_for('search_tasks', tag=task.tag) }}">{{ task.tag }}</a>
+{% else %}
+<a role="button" class="btn badge rounded-pill btn-outline-warning text-warning-emphasis" href="{{ url_for('search_tasks', tag=task.tag) }}">{{ task.tag }}</a>
+{% endif %}
+</p>
+<ul class="list-unstyled">
+     <li><hr></li>
+    <li><strong>Author:</strong> {{ task.author }}</li>
+    <li><strong>Deadline:</strong> {{ task.date_deadline.date() }}</li>
+    <li><strong>Date created:</strong> {{ task.date_created.date() }}</li>
+    <li><strong>Status:</strong> {{ task.status }}</li>
+    <li><hr></li>
+    <li class="card-text my-2">{{ task.description }}</li>
+    <li><hr></li>
+    <li>
+        <a href="{{ task.link }}" data-bs-toggle="tooltip" data-placement="top" title="Link">
+            <img src="./static/image/link.svg" alt="add button" width="20" height="20" class="mx-2"/>
+        </a>
+        <a href="{{ url_for('update_task', task_id=task.id, new_status='Backlog') }}" data-bs-toggle="tooltip" data-placement="top" title="Send Task to Backlog">
+            <img src="./static/image/backlog.svg" alt="add button" width="25" height="25" class="mx-2"/>
+        </a>
+        <a href="{{ url_for('update_task', task_id=task.id, new_status='Canceled') }}" data-bs-toggle="tooltip" data-placement="top" title="Cancel Task">
+            <img src="./static/image/cancel.svg" alt="add button" width="25" height="25" class="mx-2"/>
+        </a>
+        <a href="{{ url_for('update_task', task_id=task.id, new_status='Done') }}" data-bs-toggle="tooltip" data-placement="top" title="Task Done">
+            <img src="./static/image/done.svg" alt="add button" width="25" height="25" class="mx-2"/>
+        </a>
+        <a href="#" data-bs-toggle="modal" data-bs-target="#myModalUpdate"
+           data-id="{{ task.id }}"
+           data-task_name="{{ task.task_name }}"
+           data-author="{{ task.author }}"
+           data-date_deadline="{{ task.date_deadline.date() }}"
+           data-time_deadline="{{ task.date_deadline.time() }}"
+           data-description="{{ task.description }}"
+           data-tag="{{ task.tag }}"
+           data-status="{{ task.status }}"
+           data-link="{{ task.link }}">
+            <img src="./static/image/write.svg" alt="add button" width="25" height="25" class="mx-2"/>
+        </a>
+    </li>
+</ul>
