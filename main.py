@@ -8,10 +8,11 @@ from wtforms import StringField, SubmitField, URLField, SelectField, DateField, 
 from wtforms.validators import DataRequired, URL
 from sqlalchemy import Integer, String, DateTime
 from datetime import datetime
+import os
 
 app =Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-API_KEY = "TopSecretAPIKey"
+app.config['SECRET_KEY'] = os.environ.get("APP_SECRET_KEY")
+API_KEY = os.environ.get("API_KEY")
 Bootstrap5(app)
 
 # CREATE DB
