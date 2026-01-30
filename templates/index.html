@@ -33,14 +33,10 @@
                             {% if task.status == "To Do" %}
                               <div class="accordion-item bg-info-subtle">
                                 <h2 class="accordion-header">
-                                  {% if task.date_deadline < now %}
-                                  <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenToDo-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenToDo-collapse{{ task.id }}" style="background-color:#0c2d36;--#{$prefix}body-color:#23282c;">
-                                  </button>
-                                  {%  else %}
-                                  <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenToDo-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenToDo-collapse{{ task.id }}" style="background-color:#0c2d36;--#{$prefix}body-color:#23282c;">
-                                  {% endif %}
-                                    {{ task.task_name }}
-                                  </button>
+                                    <button class="accordion-button collapsed text-emphasis" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpenToDo-collapse{{ task.id }}" aria-expanded="false" aria-controls="panelsStayOpenToDo-collapse{{ task.id }}"
+                                        style="background-color:#0c2d36;&#45;&#45;#{$prefix}body-color:#23282c;">
+                                        {{ task.task_name }}
+                                    </button>
                                 </h2>
                                 <div id="panelsStayOpenToDo-collapse{{ task.id }}" class="accordion-collapse collapse">
                                     <div class="accordion-body">
